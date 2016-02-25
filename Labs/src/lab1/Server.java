@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Created by Duarte on 25/02/2016.
@@ -35,7 +33,7 @@ public class Server {
 
     private void respond(DatagramPacket packet){
         String message = new String(packet.getData());
-
+        System.out.println(message);
         String response = handleMessage(message);
 
         byte buf[] = response.getBytes();
@@ -72,7 +70,6 @@ public class Server {
             retString = "" + veiculoList.size()+"\n";
             retString.concat(matricula + " " + owner);
             return retString;
-
         }else{
             return failMessage;
         }
@@ -92,7 +89,7 @@ public class Server {
                 byte[] buf = new byte[BUF_SIZE];
                 DatagramPacket received = new DatagramPacket(buf, buf.length);
                 socket.receive(received);
-
+                System.out.println("Received a message");
                 server.respond(received);
             }
         }catch (IOException e){
