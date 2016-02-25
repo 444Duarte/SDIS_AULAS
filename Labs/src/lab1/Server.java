@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Server {
     final static int PORT = 4445;
-    final static int BUF_SIZE = 512;
+    final static int BUF_SIZE = 256+16;
     private final DatagramSocket socket;
 
     public class Veiculo{
@@ -32,8 +32,7 @@ public class Server {
     }
 
     private void respond(DatagramPacket packet){
-        String message = new String(packet.getData());
-        System.out.println(message);
+        String message = new String(packet.getData(),0, packet.getLength());
         String response = handleMessage(message);
 
         byte buf[] = response.getBytes();
@@ -47,8 +46,8 @@ public class Server {
     }
 
     private String handleMessage(String message){
-        String lookupPattern = "LOOKUP \\w{2}-\\w{2}-\\w{2}";
-        String registerPattern = "REGISTER \\w{2}-\\w{2}-\\w{2} [a-zA-Z]{1,256}";
+        String lookupPattern = "LOOKUP \\w{2}-\\w{2}-\\w{2}$";
+        String registerPattern = "REGISTER \\w{2}-\\w{2}-\\w{2} [\\s|a-zA-Z]{1,256}";
 
         String retString;
         final String failMessage = "-1";
@@ -69,6 +68,8 @@ public class Server {
             veiculoList.add(new Veiculo(matricula, owner));
             retString = "" + veiculoList.size()+"\n";
             retString.concat(matricula + " " + owner);
+
+            System.out.println("Registado veiculo: "+matricula+" com o dono: "+owner);
             return retString;
         }else{
             return failMessage;
@@ -82,14 +83,14 @@ public class Server {
             DatagramSocket socket = new DatagramSocket(PORT);
             Server server = new Server(socket);
 
-            System.out.println("IP: "+ InetAddress.getLocalHost().getHostAddress());
+            System.out.println("IP: "+ InetAddress.getLocalHost().getHostName());
             System.out.println("Port: "+ socket.getLocalPort());
 
             while (true) {
                 byte[] buf = new byte[BUF_SIZE];
                 DatagramPacket received = new DatagramPacket(buf, buf.length);
                 socket.receive(received);
-                System.out.println("Received a message");
+                System.out.println("Received a message: "+new String (received.getData()));
                 server.respond(received);
             }
         }catch (IOException e){
