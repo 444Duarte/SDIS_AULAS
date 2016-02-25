@@ -5,7 +5,7 @@ package lab1;
  */
 public class Client {
 
-    
+
     public void main(String[] args){
 
     }

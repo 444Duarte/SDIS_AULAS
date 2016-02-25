@@ -34,7 +34,7 @@ public class Server {
     }
 
     private void respond(DatagramPacket packet){
-        String message = packet.getData().toString();
+        String message = new String(packet.getData());
 
         String response = handleMessage(message);
 
