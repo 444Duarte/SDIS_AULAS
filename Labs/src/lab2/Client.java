@@ -18,12 +18,12 @@ public class Client {
 
 
     public static void main(String[] args) {
-        args = new String[5];
+        /*args = new String[5];
         args[0] = MIP;
         args[1] = "" + MPORT;
         args[2] = "REGISTER";
         args[3] = "AB-CD-01";
-        args[4] = "Duarte Pinto";
+        args[4] = "Duarte Pinto";*/
 
 
         String msocketIP = args[0];
