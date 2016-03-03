@@ -124,10 +124,11 @@ public class Server implements Runnable {
         try {
             this.msocket.setTimeToLive(1);
             while (true) {
-                String msg = "multicast: " + this.mserver + " " + this.mport + ": " + InetAddress.getLocalHost().getHostAddress() + " " + this.port;
+                String msg = "" + this.port;
                 DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.getBytes().length, this.mserver, this.port);
                 this.msocket.send(packet);
-                System.out.println(msg);
+                String logmsg = "multicast: " + this.mserver + " " + this.mport + ": " + InetAddress.getLocalHost().getHostAddress() + " " + this.port;
+                System.out.println(logmsg);
                 Thread.sleep(1000);
             }
 
