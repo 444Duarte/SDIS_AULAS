@@ -35,17 +35,17 @@ public class Client {
         try {
             MulticastSocket multicastSocket = new MulticastSocket(mport);
             multicastSocket.setTimeToLive(1);
-            multicastSocket.joinGroup(InetAddress.getByAddress(msocketIP.getBytes()));
+            multicastSocket.joinGroup(InetAddress.getByName(msocketIP));
 
             byte[] mbuff = new byte[BUFF_SIZE];
             DatagramPacket mpacket = new DatagramPacket(mbuff,mbuff.length);
             multicastSocket.receive(mpacket);
-
             hostIP = mpacket.getAddress();
             String message = new String(mpacket.getData(),0, mpacket.getLength());
+            System.out.println("Multicast Message: "+message);
             port = Integer.parseInt(message);
 
-            multicastSocket.leaveGroup(InetAddress.getByAddress(msocketIP.getBytes()));
+            multicastSocket.leaveGroup(InetAddress.getByName(msocketIP));
 
             String command;
             if(args[2].equals("REGISTER")) {

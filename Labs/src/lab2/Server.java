@@ -37,22 +37,16 @@ public class Server implements Runnable {
     public Server(int mport, String ip, int port) {
         try {
             msocket = new MulticastSocket(mport);
-            this.mport = port;
-            this.mserver = InetAddress.getByAddress(ip.getBytes());
+            this.mport = mport;
+            this.port = port;
+            this.mserver = InetAddress.getByName(ip);
             veiculoList = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
 
-        Server server = new Server(PORT, IP, PORT);
-
-        new Thread(server).start();
-        
-        server.receive();
-    }
 
     private void respond(DatagramPacket packet, DatagramSocket socket){
         String message = new String(packet.getData(),0, packet.getLength());
@@ -63,6 +57,7 @@ public class Server implements Runnable {
 
         try {
             socket.send(responsePacket);
+            System.out.println("Message sent to: "+packet.getAddress().getHostAddress()+":"+ packet.getPort());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,9 +102,9 @@ public class Server implements Runnable {
 
             while (true) {
                 byte[] buf = new byte[BUFF_SIZE];
-                DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
-                responseSocket.receive(responsePacket);
-                respond(responsePacket, responseSocket);
+                DatagramPacket receivedPacket = new DatagramPacket(buf, buf.length);
+                responseSocket.receive(receivedPacket);
+                respond(receivedPacket, responseSocket);
             }
         } catch (SocketException e) {
             e.printStackTrace();
@@ -137,6 +132,14 @@ public class Server implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void main(String[] args) {
+
+        Server server = new Server(PORT, IP, 4446);
+
+        new Thread(server).start();
+
+        server.receive();
     }
 }
