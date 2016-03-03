@@ -11,9 +11,9 @@ import java.net.*;
  */
 public class Client {
 
-    final static int MPORT = 4445;
+    final static int MPORT = 4446;
     final static int BUFF_SIZE = 256+16;
-    final static String MIP = "227.0.0.254";
+    final static String MIP = "228.5.6.7";
 
 
 
@@ -34,7 +34,6 @@ public class Client {
 
         try {
             MulticastSocket multicastSocket = new MulticastSocket(mport);
-            multicastSocket.setTimeToLive(1);
             multicastSocket.joinGroup(InetAddress.getByName(msocketIP));
 
             byte[] mbuff = new byte[BUFF_SIZE];

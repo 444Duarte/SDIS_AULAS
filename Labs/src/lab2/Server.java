@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Server implements Runnable {
 
-    final static int PORT = 4445;
-    final static String IP = "227.0.0.254";
+    final static int PORT = 4446;
+    final static String IP = "228.5.6.7";
     final static int BUFF_SIZE = 256+16;
 
     MulticastSocket msocket;
@@ -120,7 +120,7 @@ public class Server implements Runnable {
             this.msocket.setTimeToLive(1);
             while (true) {
                 String msg = "" + this.port;
-                DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.getBytes().length, this.mserver, this.port);
+                DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.getBytes().length, this.mserver, this.mport);
                 this.msocket.send(packet);
                 String logmsg = "multicast: " + this.mserver + " " + this.mport + ": " + InetAddress.getLocalHost().getHostAddress() + " " + this.port;
                 System.out.println(logmsg);
@@ -136,7 +136,7 @@ public class Server implements Runnable {
 
     public static void main(String[] args) {
 
-        Server server = new Server(PORT, IP, 4446);
+        Server server = new Server(PORT, IP, 4445);
 
         new Thread(server).start();
 
