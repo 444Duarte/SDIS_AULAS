@@ -32,6 +32,7 @@ public class Server implements Runnable {
 
             out.println(response);
             out.flush();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
