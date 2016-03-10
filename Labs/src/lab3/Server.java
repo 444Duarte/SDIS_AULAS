@@ -16,8 +16,8 @@ public class Server implements Runnable {
     private CarDatabase database;
     private Socket socket;
 
-    public Server(Socket socket) {
-        this.database = new CarDatabase();
+    public Server(Socket socket, CarDatabase database) {
+        this.database = database;
         this.socket = socket;
     }
 
@@ -44,11 +44,12 @@ public class Server implements Runnable {
         int portNumber = Integer.parseInt(args[0]);
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
+        CarDatabase database = new CarDatabase();
 
         while (true){
             serverSocket.setReceiveBufferSize(BUFF_SIZE);
             Socket clientSocket = serverSocket.accept();
-            Server server = new Server(clientSocket);
+            Server server = new Server(clientSocket, database);
 
             new Thread(server).start();
         }
